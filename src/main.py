@@ -10,8 +10,11 @@ from utils.list import List
 from utils.download import Download
 
 def afa():
-  listCode, aniName = Search()
-  aniCode, epsName = List(listCode, aniName)
+  while True:
+    listCode, aniName = Search()
+    aniCode, epsName = List(listCode, aniName)
+    if(aniCode != -1 and epsName != -1):
+      break
   Download(aniCode, epsName)
 
 if __name__ == '__main__':
