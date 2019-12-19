@@ -3,25 +3,29 @@ import requests
 from clint.textui import progress
 from bs4 import BeautifulSoup
 
+from utils.send import sendMessage
+
 def TryDownload(epsName, url, idx):
-  response = requests.get(url)
+  with requests.get(url, stream=True) as response:
+    if(response.status_code == 200):
+      sendMessage(epsName, url)
+      print(f"= Successed on mirror{idx} site =")
+      totalLength = response.headers.get('content-length')
+      f = open(f"/home/hajin/Videos/{epsName}.mp4", "wb")
 
-  if(response.status_code == 200):
-    print(f"= Successed on mirror{idx} site =")
-    totalLength = response.headers.get('content-length')
-    f = open(f"../../donwloads/{epsName}.mp4", "wb")
-
-    if totalLength is None:
-      f.write(response.content)
+      if totalLength is None:
+        f.write(response.content)
+      else:
+        dl = 0
+        totalLength = int(totalLength)
+        for chunk in progress.bar(response.iter_content(chunk_size=8192), expected_size=(totalLength/8192) + 1): 
+          if chunk:
+            f.write(chunk)
+            f.flush()
+      return True
     else:
-      dl = 0
-      totalLength = int(totalLength)
-      for chunk in progress.bar(response.iter_content(chunk_size=1024), expected_size=(totalLength/1024) + 1): 
-        if chunk:
-          f.write(chunk)
-          f.flush()
-  else:
-    print(f"= Failed on mirror{idx} site =")
+      print(f"= Failed on mirror{idx} site =")
+      return False
 
 def Download(aniCode, epsName):
   print(f"= Downloading {epsName} =")
@@ -38,4 +42,6 @@ def Download(aniCode, epsName):
   ]
 
   for idx, url in enumerate(urls):
-    TryDownload(epsName, url, idx)
+    stop = TryDownload(epsName, url, idx)
+
+    if(stop): break

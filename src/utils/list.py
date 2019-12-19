@@ -27,7 +27,7 @@ def List(listCode, aniName):
     'name': 'aniCode',
     'choices': [
       Separator(f'= Episodes of {aniName} ... ='),
-      {name: "Search"}
+      {"name": "Search"}
     ],
     'validate': lambda answer: 'You must choose an Ani.' \
         if len(answer) == 0 else True
