@@ -3,12 +3,13 @@ import requests
 from clint.textui import progress
 from bs4 import BeautifulSoup
 
-from utils.send import sendMessage
+from utils.send import sendMessage, sendVideo
 
 def TryDownload(epsName, url, idx):
   with requests.get(url, stream=True) as response:
     if(response.status_code == 200):
       sendMessage(epsName, url)
+      sendVideo(epsName, url)
       print(f"= Successed on mirror{idx} site =")
       totalLength = response.headers.get('content-length')
       f = open(f"/home/hajin/Videos/{epsName}.mp4", "wb")

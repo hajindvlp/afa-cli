@@ -29,7 +29,8 @@ def Search():
     'message': 'Selected Ani',
     'name': 'listCode',
     'choices': [
-      Separator(f'= Search Results of {searchString} ... =')
+      Separator(f'= Search Results of {searchString} ... ='),
+      {'name': 'List'}
     ],
     'validate': lambda answer: 'You must choose an Ani.' \
         if len(answer) == 0 else True
@@ -41,6 +42,8 @@ def Search():
     questions[0]["choices"].append({'name': f"{name} @ {code}"})
 
   answers = prompt(questions, style=style)
+  if(answers['listCode'] == 'List'):
+    return -1, -1
   code = answers['listCode'].split('@')[-1][1:]
   aniName = answers['listCode'].split('@')[0]
   

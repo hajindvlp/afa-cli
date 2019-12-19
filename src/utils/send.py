@@ -24,3 +24,11 @@ def sendMessage(epsName, url):
   text = f"Epsiode Name : {epsName}, URL : {url}"
   url = URL + f"sendMessage?text={text}&chat_id={CHATID}"
   getUrl(url)
+
+def sendVideo(epsName, url):
+  text = f"Epsiode Name : {epsName}"
+  url = URL + f"sendMessage?text={text}&chat_id={CHATID}"
+  getUrl(url)
+
+  url = URL + f"sendVideo?chat_id={CHATID}&video={url}"
+  getUrl(url)
